@@ -1,0 +1,8 @@
+version: '3'
+services:
+  webapp:
+    build: .
+    ports:
+      - "9080:9080"
+      - "9443:9443"
+      

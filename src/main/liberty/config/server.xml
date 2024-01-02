@@ -8,11 +8,15 @@
     </featureManager>
 
     <!-- JDBC config -->
-    <dataSource id="jdbc/KontoDS" jdbcDriverRef="Derby" jndiName="jdbc/KontoDS"
+    <dataSource id="jdbc/TutorDS" jndiName="jdbc/TutorDS"
                 type="javax.sql.XADataSource">
-        <properties.derby.client databaseName="konto" createDatabase="create" 
-                    serverName="localhost" portNumber="1527" user="APP" password="APP" />
+        <jdbcDriver libraryRef="PostgresLib"/>
+        <properties.postgresql databaseName="watuutkl" serverName="tai.db.elephantsql.com" portNumber="5432" user="watuutkl" password="okcIcIENxXDWRKnST_Kp3fmMRzQlpl56"/>
     </dataSource>
+    
+    <library id="PostgresLib">
+        <file name="/Users/pbrune/postgresql-42.7.1.jar"/>
+    </library>
 
     <jdbcDriver id="Derby" libraryRef="DerbyJDBCJar" javax.sql.XADataSource="org.apache.derby.jdbc.ClientXADataSource"/>
     <library filesetRef="DerbyFileset" id="DerbyJDBCJar"/>

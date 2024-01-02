@@ -7,12 +7,12 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-class AppTest {
+public class AppTest {
     /**
      * Rigorous Test.
      */
     @Test
-    void testApp() {
+    public void testApp() {
         assertEquals(1, 1);
     }
 }
