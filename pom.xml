@@ -20,13 +20,43 @@
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/javax/javaee-api -->
+    <!-- Java EE API -->
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <version>8.0.1</version>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- PostgreSQL JDBC Driver -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.1</version> <!-- Use the latest version available -->
+    </dependency>
+    
+    <!-- Apache Tika -->
+    <dependency>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-core</artifactId>
+      <version>2.9.1</version> <!-- Use the latest version available -->
+    </dependency>
+    
+    <!-- OpenNLP -->
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>1.9.3</version> <!-- Use the latest version available -->
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/api -->
+    <dependency>
+      <groupId>com.theokanning.openai-gpt3-java</groupId>
+      <artifactId>service</artifactId>
+      <version>0.18.2</version>
+    </dependency>
+  
+    <!-- JUnit -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
