@@ -6,6 +6,8 @@ import com.theokanning.openai.completion.CompletionRequest;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+// Nera, 07.01.2024: Can be deleted; HTTP Post for prompting included in GPTprompting.java
+
 @ApplicationScoped
 public class GPT3Service {
     private OpenAiService service;

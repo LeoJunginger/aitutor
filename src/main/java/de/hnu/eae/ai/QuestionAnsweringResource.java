@@ -5,6 +5,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+// Nera, 07.01.2024: Can be deleted; HTTP Post for prompting included in GPTprompting.java
+
 @Path("/ai")
 public class QuestionAnsweringResource {
 
