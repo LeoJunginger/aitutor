@@ -20,6 +20,10 @@ public class Course {
     @JoinColumn(name = "lecturer_id", nullable = false)
     private Lecturer lecturer;
 
+    // Field to store the path to the course material
+    @Column(name = "material_path")
+    private String materialPath;
+
     /*@OneToMany(mappedBy = "course")
     private Set<CourseMaterial> courseMaterials;
     */
@@ -64,6 +68,14 @@ public class Course {
 
     public void setLecturer(Lecturer lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public String getMaterialPath() {
+        return materialPath;
+    }
+
+    public void setMaterialPath(String materialPath) {
+        this.materialPath = materialPath;
     }
     
 
