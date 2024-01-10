@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="new server">
 
+    <webApplication id="aitutor" location="aitutor.war" contextRoot="/aitutor"/>
+
     <!-- Enable features -->
     <featureManager>
         <feature>localConnector-1.0</feature>
         <feature>webProfile-8.0</feature>
+        <feature>jwt-1.0</feature>
     </featureManager>
 
     <!-- JDBC config -->
@@ -15,7 +18,7 @@
     </dataSource>
     
     <library id="PostgresLib">
-        <file name="/Users/pbrune/postgresql-42.7.1.jar"/>
+        <file name="${server.config.dir}/lib/postgresql-42.7.1.jar"/>
     </library>
 
     <jdbcDriver id="Derby" libraryRef="DerbyJDBCJar" javax.sql.XADataSource="org.apache.derby.jdbc.ClientXADataSource"/>
