@@ -1,30 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-// useState lets add state to functional components
-import React, { useState } from 'react';
-import ChatComponent from './ChatComponent.js'; 
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+import Homepage from './pages/Homepage';
+import CourseDashboard from './pages/CourseDashboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {/* Add ChatComponent to the App */}
-        <ChatComponent />
-      </header>
-    </div>
-    
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/courses" element={<CourseDashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
