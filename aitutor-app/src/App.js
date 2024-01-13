@@ -1,15 +1,12 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-// useState lets add state to functional components
-import React, { useState } from 'react';
-import ChatComponent from './ChatComponent.js'; 
+import ChatPage from './pages/ChatPage'; // Adjust the path based on your project structure
 
 function App() {
   return (
     <div className="App">
-        <div style={{ maxWidth: "500px"}}></div>
+      <ChatPage />
     </div>
-    
   );
 }
 
