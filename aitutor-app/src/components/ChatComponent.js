@@ -5,7 +5,7 @@ export default function ChatComponent() {
     // State for the current user input
     const [input, setInput] = useState('');
 
-    const [conversation, setConversation] = useState([
+        const [conversation, setConversation] = useState([
         { message: "Loading available courses...", sender: "ChatGPT" }
     ]);
 
@@ -91,7 +91,7 @@ export default function ChatComponent() {
                 setAskingCourse(false);
             } else {
                 // User provides a course name
-                setCourseName(extractCourseName(userInput));
+                setCourseName(userInput);
                 setConversation(convo => [...convo, { sender: 'ai', message: `Got it! What's your question regarding ${userInput}?` }]);
                 setAskingCourse(false);
             }
@@ -109,13 +109,13 @@ export default function ChatComponent() {
         <div style={{position: "relative", height: "800px", width: "700px"}}>
             <div className="chat-container">
                 <div className="message-list">
-                    {conversation.map((msg, index) => (
-                        <div key={index} className={`message ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
+                        {conversation.map((msg, index) => (
+                            <div key={index} className={`message ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
                             {msg.message}
                         </div>
-                    ))}
-                </div>
-                {isLoading && <div className="typing-indicator">Waiting for response...</div>}
+                        ))}
+                    </div>
+                    {isLoading && <div className="typing-indicator">Waiting for response...</div>}
                 <div className="message-input">
                     <input
                         type="text"
