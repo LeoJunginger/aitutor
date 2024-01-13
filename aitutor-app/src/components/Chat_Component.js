@@ -90,23 +90,32 @@ export default function ChatComponent() {
     const handleSubmit = async () => {
         const userInput = input.trim();
         if (!userInput) return; // Ignore empty input
-
+    
         // Add user's message to the conversation history
         setConversation([...conversation, { message: userInput, sender: "user", direction: "outgoing" }]);
         setInput(''); // Clear the input field
         setIsLoading(true); // Set loading state to indicate processing
-
+    
         // Check if currently asking for a course name
         if (askingCourse) {
             if (userInput.toLowerCase() === 'no') {
                 // User indicates no specific course question
                 setConversation(convo => [...convo, { sender: 'ai', message: "Alright, feel free to ask any general questions or about learning strategies!" }]);
-                setAskingCourse(false);
+                setAskingCourse(false); // Stop asking for course name
             } else {
-                // User provides a course name
-                setCourseName(extractCourseName(userInput));
-                setConversation(convo => [...convo, { sender: 'ai', message: `Got it! What's your question regarding ${userInput}?` }]);
-                setAskingCourse(false);
+                // Extract the course name from user input
+                const extractedCourseName = extractCourseName(userInput);
+        
+                if (extractedCourseName) {
+                    // User provides a valid course name
+                    setCourseName(extractedCourseName);
+                    setConversation(convo => [...convo, { sender: 'ai', message: `Got it! What's your question regarding ${extractedCourseName}?` }]);
+                    setAskingCourse(false); // Stop asking for course name
+                } else {
+                    // Course name not found, keep asking for a course name
+                    setConversation(convo => [...convo, { sender: 'ai', message: "Sorry, I couldn't find that course. Please provide a valid course name." }]);
+                    // Do not set askingCourse to false here
+                }
             }
         } else {
             // Handle questions related to the course or general questions

@@ -12,6 +12,8 @@
     padding: 10px;
     overflow-y: auto;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .message {
@@ -19,18 +21,21 @@
     padding: 8px 15px;
     border-radius: 20px;
     max-width: 70%;
+    width: max-content; /* Adjusts width dynamically based on content */
 }
 
 .outgoing {
     background-color: #007bff;
     color: white;
     align-self: flex-end;
+    text-align: right;
 }
 
 .incoming {
     background-color: #e9ecef;
     color: black;
     align-self: flex-start;
+    text-align: left;
 }
 
 .typing-indicator {

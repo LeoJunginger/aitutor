@@ -1,7 +1,7 @@
 // ChatPage.js
 import React from 'react';
-import ChatComponent from '../components/ChatComponent.js'; 
-import '../components/ChatStyle.css'; // Update the path as per your directory structure
+import '../components/ChatStyle.css'; 
+import ChatComponent from '../components/Chat_Component.js'; 
 
 const ChatPage = () => {
     return (
