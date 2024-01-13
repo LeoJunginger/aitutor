@@ -34,6 +34,19 @@ export default function ChatComponent() {
         }
     }; */
 
+    // Fetch course information when component mounts
+    useEffect(() => {
+        fetch('http://localhost:8080/api/courses')
+            .then(response => response.json())
+            .then(data => {
+                // Add course information to conversation
+                setConversation([...conversation, ...data]);
+            })
+            .catch(error => console.error('Error:', error));
+    }, []);
+    
+    
+
     // useEffect to fetch course names on component mount
     useEffect(() => {
         getCoursenames().then(courseNames => {
@@ -91,7 +104,7 @@ export default function ChatComponent() {
                 setAskingCourse(false);
             } else {
                 // User provides a course name
-                setCourseName(userInput);
+                setCourseName(extractCourseName(userInput));
                 setConversation(convo => [...convo, { sender: 'ai', message: `Got it! What's your question regarding ${userInput}?` }]);
                 setAskingCourse(false);
             }
