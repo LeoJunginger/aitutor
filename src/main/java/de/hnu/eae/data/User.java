@@ -13,6 +13,10 @@ import javax.persistence.TemporalType;
 public class User {
     @Id @GeneratedValue
     private long id;
+    @Column(nullable = false, unique = true)
+    private String username;
+    @Column(nullable = false)
+    private String password;
     @Column(length=30)
     private String firstname;
     @Column(length=30)
@@ -94,6 +98,22 @@ public class User {
 
     public void setCountryOfResidence(String countryOfResidence) {
         this.countryOfResidence = countryOfResidence;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
