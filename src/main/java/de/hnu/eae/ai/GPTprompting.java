@@ -7,6 +7,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
@@ -83,32 +84,51 @@ public class GPTprompting {
         return content;
     }
 
-    public String askChatGPT(String documentContent, String apiKey) {
+   public String askChatGPT(String combinedInput, String apiKey) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            // URL for the ChatGPT endpoint
-            String chatGPTUrl = "https://api.openai.com/v1/chat/gpt-3.5-turbo/completions";
+            // URL for the ChatGPT API endpoint
+            String chatGPTUrl = "https://api.openai.com/v1/chat/completions";
 
-            // Setting up the request
+            // Setting up the HTTP POST request
             HttpPost request = new HttpPost(chatGPTUrl);
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey);
             request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
-            // Prepare JSON payload with document content
+            // Prepare the JSON payload for the request
             JSONObject jsonPayload = new JSONObject();
-            jsonPayload.put("prompt", documentContent);
-            jsonPayload.put("max_tokens", 100);  // Adjust token limit as needed; Total tokens available 4096 including input
+            jsonPayload.put("model", "gpt-3.5-turbo");
+            jsonPayload.put("messages", new JSONArray()
+                .put(new JSONObject()
+                    .put("role", "system")
+                    .put("content", "Explain to a student taking a course on the topic. Base your answer on the material provided, if provided."))
+                .put(new JSONObject()
+                    .put("role", "user")
+                    .put("content", combinedInput)));
 
-            // Attach payload to the request
+            // Attach the JSON payload to the request
             StringEntity requestEntity = new StringEntity(jsonPayload.toString());
             request.setEntity(requestEntity);
 
-            // Execute the request
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Extract the response content
-                String responseString = EntityUtils.toString(response.getEntity());
-                return responseString;
-            }
+            /// Execute the request
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            // Extract the response content
+            String responseString = EntityUtils.toString(response.getEntity());
 
+            // Parse the response string to JSON
+            JSONObject jsonResponse = new JSONObject(responseString);
+
+            // Navigate through the JSON structure to extract the content
+            JSONArray choices = jsonResponse.getJSONArray("choices");
+            if (choices.length() > 0) {
+                JSONObject firstChoice = choices.getJSONObject(0);
+                JSONObject message = firstChoice.getJSONObject("message");
+                String content = message.getString("content");
+
+                return content;  // Return the extracted content
+            } else {
+                return "No response received from the API.";
+            }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();

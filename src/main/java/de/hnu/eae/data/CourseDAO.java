@@ -1,5 +1,6 @@
 package de.hnu.eae.data;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -8,6 +9,7 @@ import javax.transaction.Transactional;
  * This class represents a Data Access Object (DAO) for the Course entity.
  * It provides methods to create, find, and update Course objects in the database.
  */
+@RequestScoped
 public class CourseDAO {
 
     @PersistenceContext
