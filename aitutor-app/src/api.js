@@ -26,3 +26,12 @@ export const fetchCourses = () => {
 };
 
 export default API;
+
+// Function to send a question to GPT API
+export const askGPT = (question, filePaths) => {
+  return API.post('/ask-gpt', {
+    courseName: courseName,
+    question: question,
+    filePaths: filePaths
+  });
+};

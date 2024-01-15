@@ -1,76 +1,64 @@
 import React, { useState, useEffect } from 'react';
+import { fetchCourses, askGPT } from '../api';
+
 
 // Functional component for Chat
 export default function ChatComponent() {
     // State for the current user input
     const [input, setInput] = useState('');
 
-        const [conversation, setConversation] = useState([
+    // State to determine the available courses in the db
+    const [courses, setCourses] = useState([]);
+
+    // State for the conversation history
+    const [conversation, setConversation] = useState([
         { message: "Loading available courses...", sender: "ChatGPT" }
     ]);
 
-    // Mock function to simulate fetching course names
-    const getCoursenames = async () => {
-        // Simulate a delay like an API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+    useEffect(() => {
+        const getCourses = async () => {
+            try {
+                const fetchPromise = fetchCourses(); // Fetch courses from the backend
 
-        // Return a list of course names
-        return ['EAE', 'SPM', 'DPM', 'TAM', 'DL'];
-    };
+                const timeoutPromise = new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({ data: ['EAE','TAM'] }); // Default course names
+                    }, 5000); // Timeout in milliseconds
+                });
 
-    // Function to fetch course names via API Endpoint
-    // Delete above testing function after implementing API Endpoint
-    /* const getCoursenames = async () => {
-        try {
-            const response = await fetch('/api/courses'); // TODO: Replace with  API endpoint
-            if (!response.ok) {
-                throw new Error('Network response failed');
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+                // Define courseList here based on the response
+                const courseList = Array.isArray(response.data) && response.data.length
+                    ? response.data.map(course => course.courseName ? course.courseName : course).join(', ')
+                    : ['EAE','TAM'].join(', '); // Use default if response is empty
+
+                setCourses(response.data); // Set the courses from the response or default
+                setConversation([
+                    { message: `Do you have a specific question to a course? Available courses are: ${courseList}`, sender: "ChatGPT" }
+                ]);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+                // Handle error by setting default courses
+                const defaultCourses = ['EAE', 'TAM'];
+                setCourses(defaultCourses);
+                const courseList = defaultCourses.join(', ');
+                setConversation([
+                    { message: `There was an error fetching the most current available courses. I can stil answer questions regarting: ${courseList}`, sender: "ChatGPT" }
+                ]);
             }
-            const courses = await response.json();
-            return courses.map(course => course.name); // Assuming each course has 'name' property
-        } catch (error) {
-            console.error('Failed to fetch courses:', error);
-            return ['Unable to fetch courses'];
-        }
-    }; */
+        };
 
-    // Fetch course information when component mounts
-    useEffect(() => {
-        fetch('http://localhost:8080/api/courses')
-            .then(response => response.json())
-            .then(data => {
-                // Add course information to conversation
-                setConversation([...conversation, ...data]);
-            })
-            .catch(error => console.error('Error:', error));
+        getCourses();
     }, []);
-    
-    
 
-    // useEffect to fetch course names on component mount
-    useEffect(() => {
-        getCoursenames().then(courseNames => {
-            const courseList = courseNames.join(', ');
-            setConversation([
-                { message: `Do you have a specific question to a course? Available courses are: ${courseList}`, sender: "ChatGPT" }
-            ]);
-        });
-    }, []); // Empty dependency array ensures this runs once on mount
-
+    // Function to extract course name from user input
     const extractCourseName = (userInput) => {
-        const courseNames = ['EAE', 'SPM', 'DPM', 'TAM', 'DL'];
-
-        // Create a regular expression to find these course names in the input
-        const courseNameRegex = new RegExp(courseNames.join('|'), 'i');
-
-        // Search for a course name in the user input
+        // Assuming courseList will be a comma-separated string
+        const courseNameRegex = new RegExp(courses.join('|'), 'i');
         const match = userInput.match(courseNameRegex);
-
-        // If a course name is found, return it, otherwise return null
         return match ? match[0] : null;
     };
-
-
 
     // State to indicate if the AI is "typing" or processing a response
     const [isLoading, setIsLoading] = useState(false);
@@ -115,17 +103,24 @@ export default function ChatComponent() {
                     // Course name not found, keep asking for a course name
                     setConversation(convo => [...convo, { sender: 'ai', message: "Sorry, I couldn't find that course. Please provide a valid course name." }]);
                     // Do not set askingCourse to false here
+                }}
+            } else {
+                // Call the askGPT API function with the course name and user question
+                try {
+                    const response = await askGPT(courseName, userInput);
+                    if (response.data) {
+                        setConversation(convo => [...convo, { sender: 'ai', message: response.data }]);
+                    } else {
+                        setConversation(convo => [...convo, { sender: 'ai', message: "Sorry, I couldn't process your question." }]);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    setConversation(convo => [...convo, { sender: 'ai', message: "An error occurred while contacting the server." }]);
                 }
             }
-        } else {
-            // Handle questions related to the course or general questions
-            // TODO: Send userInput and courseName to GPT API for processing
-            const aiResponse = 'Response from GPT...'; // Placeholder response
-            setConversation(convo => [...convo, { sender: 'ai', message: aiResponse }]);
-        }
-
-        setIsLoading(false); // Reset loading state after response
-    };
+        
+            setIsLoading(false); // Reset loading state after response
+        };
 
     return (
         <div style={{position: "relative", height: "800px", width: "700px"}}>

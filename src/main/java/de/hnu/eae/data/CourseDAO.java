@@ -3,6 +3,7 @@ package de.hnu.eae.data;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 /**
@@ -34,6 +35,26 @@ public class CourseDAO {
     @Transactional
     public Course findCourse(Long courseId) {
         return entityManager.find(Course.class, courseId);
+    }
+
+    /**
+     * Finds the latest Course object in the database by its name.
+     *
+     * @param courseName The name of the Course object to be found.
+     * @return The latest Course object with the given name, or null if not found.
+     */
+    @Transactional
+    public Course findCoursebyName(String courseName) {
+        TypedQuery<Course> query = entityManager.createQuery(
+            "SELECT c FROM Course c WHERE c.courseName = :name ORDER BY c.courseId DESC", Course.class);
+        query.setParameter("name", courseName);
+        query.setMaxResults(1);
+        try {
+            return query.getSingleResult();
+        } catch (Exception e) {
+            // Handle the case where no course is found
+            return null;
+        }
     }
 
     /**

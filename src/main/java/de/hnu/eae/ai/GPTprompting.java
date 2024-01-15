@@ -17,7 +17,6 @@ import java.util.List;
 // Nera, 10.01.2024: Changed DocumentReading to multiple files
 
 public class GPTprompting {
-
     // Class-level instances of DocumentProcessor and TextTokenizer
     private DocumentProcessor docProcessor;
     private TextTokenizer tokenizer;
@@ -27,26 +26,7 @@ public class GPTprompting {
         this.docProcessor = new DocumentProcessor();
         this.tokenizer = new TextTokenizer();
     }
-
-    public static void main(String[] args) {
-       // Create an instance of GPTprompting
-       GPTprompting gptPrompting = new GPTprompting();
-
-       // List of example file paths (replace with actual files from db after backend implementation)
-       List<String> filePaths = Arrays.asList(
-           "src/test/java/de/hnu/eae/UnderstandingLibertyServer.pdf",
-           "src/test/java/de/hnu/eae/UnderstandingLibertyServer.pdf"
-       );
-
-       // Example question
-       String question = "How does Liberty Server's dynamic loading works?";
-
-       // Call the method on the instance
-       String answer = gptPrompting.processDocumentsAndAskQuestion(filePaths, question);
-       
-       System.out.println(answer);
-    }
-
+    
     public String processDocumentsAndAskQuestion(List<String> filePaths, String question){
         // OpenAI API key
         String apiKey = "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"; // Add API Key
