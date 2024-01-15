@@ -1,5 +1,7 @@
 package de.hnu.eae.data;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,10 +26,9 @@ public class Course {
     @Column(name = "material_path")
     private String materialPath;
 
-    /*@OneToMany(mappedBy = "course")
-    private Set<CourseMaterial> courseMaterials;
-    */
-    // Constructors, getters, and setters
+    @ManyToMany
+    @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "courseId", referencedColumnName = "courseId"), inverseJoinColumns = @JoinColumn(name = "studentId", referencedColumnName = "id"))
+    private Set<Student> enrolledStudents;
 
     public Course() {
     }
@@ -77,6 +78,12 @@ public class Course {
     public void setMaterialPath(String materialPath) {
         this.materialPath = materialPath;
     }
-    
 
+    public Set<Student> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public void setEnrolledStudents(Set<Student> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
 }
