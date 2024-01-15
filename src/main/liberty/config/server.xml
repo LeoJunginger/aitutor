@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="new server">
 
-    <webApplication id="aitutor" location="aitutor.war" contextRoot="/aitutor"/>
+    <webApplication id="aitutor" location="aitutor.war" contextRoot="/aitutor" />
 
     <!-- Enable features -->
     <featureManager>
@@ -11,30 +11,30 @@
     </featureManager>
 
     <!-- JDBC config -->
-    <dataSource id="jdbc/TutorDS" jndiName="jdbc/TutorDS"
-                type="javax.sql.XADataSource">
-        <jdbcDriver libraryRef="PostgresLib"/>
-        <properties.postgresql databaseName="watuutkl" serverName="tai.db.elephantsql.com" portNumber="5432" user="watuutkl" password="okcIcIENxXDWRKnST_Kp3fmMRzQlpl56"/>
+    <dataSource id="TutorDS" jndiName="jdbc/TutorDS" type="javax.sql.XADataSource">
+        <jdbcDriver libraryRef="PostgresLib" />
+        <properties.postgresql databaseName="AITutorDB" serverName="postgres" portNumber="5432"
+            user="test" password="test" />
     </dataSource>
-    
+
     <library id="PostgresLib">
-        <file name="${server.config.dir}/lib/postgresql-42.7.1.jar"/>
+        <file name="/config/lib/postgresql-42.7.1.jar" />
     </library>
 
-    <jdbcDriver id="Derby" libraryRef="DerbyJDBCJar" javax.sql.XADataSource="org.apache.derby.jdbc.ClientXADataSource"/>
+    <!-- <jdbcDriver id="Derby" libraryRef="DerbyJDBCJar"
+    javax.sql.XADataSource="org.apache.derby.jdbc.ClientXADataSource"/>
     <library filesetRef="DerbyFileset" id="DerbyJDBCJar"/>
     <fileset dir="/Users/pbrune/db-derby-10.16.1.1-bin/lib" id="DerbyFileset"
-             includes="*.jar"/>
+             includes="*.jar"/> -->
 
-    <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
-    <httpEndpoint id="defaultHttpEndpoint"
-                  httpPort="9080"
-                  httpsPort="9443" />
+    <!-- To access this server from a remote client add a host attribute to the following element,
+    e.g. host="*" -->
+    <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" />
 
     <!-- Automatically expand WAR files and EAR files -->
-    <applicationManager autoExpand="true"/>
+    <applicationManager autoExpand="true" />
     <applicationMonitor updateTrigger="mbean"></applicationMonitor>
 
-    <!-- Default SSL configuration enables trust for default certificates from the Java runtime --> 
+    <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
 </server>

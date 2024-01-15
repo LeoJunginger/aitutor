@@ -1,14 +1,17 @@
-# Use an Open Liberty base image with Java 11
-FROM openliberty/open-liberty:full-java11-openj9-ubi
+# Use Open Liberty base image with Java 17
+FROM openliberty/open-liberty:full-java17-openj9-ubi
 
-# Copy the Liberty server configuration files (assuming they are in the 'src/main/liberty/config' directory)
-COPY --chown=1001:0 src/main/liberty/config /config/
+# Add Liberty server configuration file
+COPY --chown=1001:0 src/main/liberty/config/server.xml /config/
 
-# Copy the built WAR file from the Maven target folder to the Liberty deployment directory
+# Add PostgreSQL driver
+COPY --chown=1001:0 src/main/liberty/config/lib/postgresql-42.7.1.jar /config/lib/
+
+# Add your application WAR
 COPY --chown=1001:0 target/aitutor.war /config/apps/
 
-# Set the default HTTP and HTTPS ports for Liberty
+# Default ports for HTTP and HTTPS
 EXPOSE 9080 9443
 
-# Run the Liberty server script
+# Configure server
 RUN configure.sh

@@ -5,4 +5,11 @@ services:
     ports:
       - "9080:9080"
       - "9443:9443"
-      
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: AITutorDB
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"
