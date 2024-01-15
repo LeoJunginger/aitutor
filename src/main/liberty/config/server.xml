@@ -13,7 +13,7 @@
     <!-- JDBC config -->
     <dataSource id="TutorDS" jndiName="jdbc/TutorDS" type="javax.sql.XADataSource">
         <jdbcDriver libraryRef="PostgresLib" />
-        <properties.postgresql databaseName="AITutorDB" serverName="postgres" portNumber="5432"
+        <properties.postgresql databaseName="AITutorDB" serverName="db" portNumber="5432"
             user="test" password="test" />
     </dataSource>
 
