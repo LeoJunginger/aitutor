@@ -1,7 +1,6 @@
 package de.hnu.eae;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.POST;
@@ -12,11 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.hnu.eae.ai.GPTprompting;
-import de.hnu.eae.data.CourseDAO;
-import de.hnu.eae.data.Course;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 // REST API for GPT request, necessary to allign with separation of concerns
@@ -25,13 +21,9 @@ import java.util.List;
 // GPTRequest object used to call GPTprompting
 // REsponse from GPTpromüting via GPTpromptingWS API to client
 
-
 @Stateless
 @Path("/gptprompting")
 public class GPTpromptingWS {
-
-    @Inject
-    private CourseDAO courseDAO;
 
     @POST
     @Path("/ask")
@@ -48,7 +40,6 @@ public class GPTpromptingWS {
         List<String> materialPath = new ArrayList<>();
         materialPath.add(gptrequest.getFilePaths());
 
-
         // Call GPTprompting to process the documents and get a response from GPT
         String gptResponse = gptprompting.processDocumentsAndAskQuestion(materialPath, gptrequest.getQuestion());
 
@@ -56,14 +47,9 @@ public class GPTpromptingWS {
         return Response.ok(gptResponse).build();
     }
 
-
     public static class GPTRequest {
         private String question;
         private String filePaths;
-    
-        
-
-        
 
         public String getFilePaths() {
             return filePaths;
@@ -81,18 +67,15 @@ public class GPTpromptingWS {
         public String getQuestion() {
             return question;
         }
-    
+
         // Setter for question
         public void setQuestion(String question) {
             this.question = question;
         }
-    
-
 
         @Override
         public String toString() {
             return "GPTRequest [question=" + question + ", filePaths=" + filePaths + "]";
         }
     }
-    
 }

@@ -15,11 +15,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.io.InputStream;
 
 /**
@@ -44,13 +40,12 @@ public class CourseResource {
         return Response.status(Response.Status.CREATED).entity("Course created successfully").build();
     }
 
-
     /**
      * Uploads material for a specific course.
      * 
-     * @param courseId         the ID of the course
-     * @param fileInputStream  the input stream of the file to upload
-     * @param fileMetaData     the metadata of the file to upload
+     * @param courseId        the ID of the course
+     * @param fileInputStream the input stream of the file to upload
+     * @param fileMetaData    the metadata of the file to upload
      * @return the response indicating the status of the operation
      */
     @POST
@@ -78,7 +73,7 @@ public class CourseResource {
         }
     }
 
-            /**
+    /**
      * Retrieves a list of all courses.
      *
      * @return the response containing the list of courses
@@ -86,11 +81,11 @@ public class CourseResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCourses() {
-        List<Course> courses = courseDAO.getAllCourses(); 
+        List<Course> courses = courseDAO.getAllCourses();
         return Response.ok(courses).build();
     }
 
-        /**
+    /**
      * Retrieves a specific course.
      * 
      * @param courseId the ID of the course

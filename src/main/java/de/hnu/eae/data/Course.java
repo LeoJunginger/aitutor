@@ -24,30 +24,18 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private Set<User> students = new HashSet<>();
 
-    /*@ManyToMany
-    @JoinTable(
-        name = "enrollment",  // Der Name der Join-Tabelle
-        joinColumns = @JoinColumn(name = "course_id"),  // Die Spalte für "Course"
-        inverseJoinColumns = @JoinColumn(name = "student_id")  // Die Spalte für "Student"
-    )
-    private Set<Student> enrolledStudents;
-    /*@OneToMany(mappedBy = "course")
-    private Set<CourseMaterial> courseMaterials;
-    */
-
     public Course(String courseName, String description, String lecturer, String materialPath, Set<User> students) {
         this.courseName = courseName;
         this.description = description;
         this.lecturer = lecturer;
         this.materialPath = materialPath;
         this.students = students;
-    
+
     }
-    
+
     public Course() {
         super();
-    }   
-   
+    }
 
     public Long getCourseId() {
         return courseId;
@@ -89,12 +77,6 @@ public class Course {
         this.materialPath = materialPath;
     }
 
-    /*
-    public Course() {
-        this.enrolledStudents = new HashSet<>();
-    }
-    */
-
     public Set<User> getEnrolledStudents() {
         return students;
     }
@@ -102,19 +84,4 @@ public class Course {
     public void setEnrolledStudents(Set<User> enrolledStudents) {
         this.students = enrolledStudents;
     }
-    /*
-    public void addEnrolledStudent(Student student) {
-        if (enrolledStudents == null) {
-            enrolledStudents = new HashSet<>();
-        }
-        enrolledStudents.add(student);
-        student.getEnrolledCourses().add(this);
-    }
-
-    public void removeEnrolledStudent(Student student) {
-        enrolledStudents.remove(student);
-        student.getEnrolledCourses().remove(this);
-    } */
 }
-    
-

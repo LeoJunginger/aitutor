@@ -7,11 +7,9 @@ public class Credentials {
     private String username;
     private String password;
 
-    // Default constructor for JAX-RS to deserialize JSON into an object.
     public Credentials() {
     }
 
-    // Getters and setters
     public String getUsername() {
         return username;
     }

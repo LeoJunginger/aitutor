@@ -60,7 +60,6 @@ public class AuthenticationResource {
     @POST
     @Path("/logout")
     public Response logout() {
-        // There is nothing much to do here since JWTs are stateless
         // Implement jwt_token removal on client side
         return Response.ok().entity("User logged out successfully").build();
     }
@@ -71,7 +70,7 @@ public class AuthenticationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(User user) {
         try {
-            // Validate user details (e.g., check if username is already taken)
+            // Validate user details
             if (userDAO.findUserByUsername(user.getUsername()) != null) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("Username already taken").build();

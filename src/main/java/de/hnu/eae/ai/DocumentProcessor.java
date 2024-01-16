@@ -5,7 +5,6 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 // Nera, 07.01.2024: Changed to Read PDF with PDFBox, former implementation extracted null from Example PDFs
 
@@ -22,7 +21,7 @@ public class DocumentProcessor {
         } catch (IOException e) {
             e.printStackTrace();
             try {
-            PDDocument document = PDDocument.load(new File("src/main/java/de/hnu/eae/ai/pdfs/UnderstandingLibertyServer.pdf"));
+            PDDocument document = PDDocument.load(new File("./uploaded-files/UnderstandingLibertyServer.pdf"));
             PDFTextStripper stripper = new PDFTextStripper();
             return stripper.getText(document);
             } catch (IOException ex) {

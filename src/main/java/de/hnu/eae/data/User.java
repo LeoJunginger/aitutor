@@ -17,37 +17,31 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(schema = "public", name = "users")
 public class User {
-    @Id @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private long id;
-    // @Column(nullable = false, unique = true)
-    // private long matrNr;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(length=20)
+    @Column(length = 20)
     private String role;
-    @Column(length=30)
+    @Column(length = 30)
     private String firstname;
-    @Column(length=30)
+    @Column(length = 30)
     private String lastname;
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
-    @Column(length=20)
+    @Column(length = 20)
     private String nationality;
     @ManyToMany
-    @JoinTable(
-        name = "user_course",
-        joinColumns = @javax.persistence.JoinColumn(name = "id"), 
-        inverseJoinColumns = @javax.persistence.JoinColumn(name = "courseId")  
-    )
+    @JoinTable(name = "user_course", joinColumns = @javax.persistence.JoinColumn(name = "id"), inverseJoinColumns = @javax.persistence.JoinColumn(name = "courseId"))
     private Set<Course> courses = new HashSet<>();
 
-
-    public User(long id, String username, String password, String role, String firstname, String lastname, Date dateOfBirth, 
+    public User(long id, String username, String password, String role, String firstname, String lastname,
+            Date dateOfBirth,
             String nationality) {
         this.id = id;
-        // this.matrNr = matrNr;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -118,46 +112,13 @@ public class User {
 
     public enum Role {
         STUDENT, LECTURER
-    }   
+    }
 
     public String getRole() {
         return role;
     }
-    
+
     public void setRole(String role) {
         this.role = role;
     }
-
-    /*@ManyToMany(mappedBy = "enrolledStudents")
-    private Set<Course> enrolledCourses;
-
-    /* @OneToMany(mappedBy = "student")
-    private Set<CourseFeedback> courseFeedback;
-
-    public long getMatrNr() {
-        return matrNr;
-    }
-
-    public void setMatrNr(long matrNr) {
-        this.matrNr = matrNr;
-    }
-
-    /* public Set<Course> getEnrolledCourses() {
-        return enrolledCourses;
-    }
-
-    public void setEnrolledCourses(Set<Course> enrolledCourses) {
-        this.enrolledCourses = enrolledCourses;
-    } */
-
-    /* public Set<CourseFeedback> getCourseFeedback() {
-        return courseFeedback;
-    }
-
-    public void setCourseFeedback(Set<CourseFeedback> courseFeedback) {
-        this.courseFeedback = courseFeedback;
-    }
-    */
-
-    
 }
