@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
+import chatBotIcon from '../resources/chat-bot.svg';
 import '../styling/Homepage.css';
 
 function Homepage() {
@@ -64,7 +65,7 @@ function Homepage() {
             </div>
 
             <div className="chat-icon-container" onClick={goToChatPage}>
-                <img src="../resources/chat-bot.svg" alt="Chat Bot" className="chat-icon" />
+                <img src={chatBotIcon} alt="Chat Bot" className="chat-icon" />
             </div>
         </div>
     );
