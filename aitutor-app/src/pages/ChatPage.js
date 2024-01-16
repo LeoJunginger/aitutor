@@ -1,7 +1,7 @@
 // ChatPage.js
 import React from 'react';
 import '../styling/ChatStyle.css'; 
-import ChatComponent from '../components/Chat_Component.js'; 
+import ChatComponent from '../components/ChatComponent.js'; 
 
 const ChatPage = () => {
     return (
