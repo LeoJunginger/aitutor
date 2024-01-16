@@ -58,7 +58,7 @@ public class CourseResource {
         }
 
         try {
-            Path uploadDir = Path.of("/path/to/upload/directory");
+            Path uploadDir = Path.of("/path/in/container");
             Path filePath = uploadDir.resolve(fileMetaData.getFileName());
             Files.copy(fileInputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
