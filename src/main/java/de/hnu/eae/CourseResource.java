@@ -2,6 +2,7 @@ package de.hnu.eae;
 
 import de.hnu.eae.data.Course;
 import de.hnu.eae.data.CourseDAO;
+import de.hnu.eae.data.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -14,6 +15,11 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.io.InputStream;
 
 /**
@@ -36,6 +42,25 @@ public class CourseResource {
     public Response createCourse(Course course) {
         courseDAO.createCourse(course);
         return Response.status(Response.Status.CREATED).entity("Course created successfully").build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Course> getAllCourses() {
+        // get all courses from database via entity manager
+        User U1 = new User(999, "uname1", "pwd1", "role1", "User_fn", "User_ln",  new Date(10000), "deutsch");
+        Set<User> S1 = new HashSet<>();
+        S1.add(U1);
+
+        Course A1 = new Course("TAM", "TAM Description", "Weeger", "../src/main/java/de/hnu/eae/ai/pdfs/UnderstandingLibertyServer.pdf", S1);
+        Course A2 = new Course("TAM2", "TAM Description", "Weeger", "../src/main/java/de/hnu/eae/ai/pdfs/UnderstandingLibertyServer.pdf", S1);
+        
+        List<Course> L1 = new ArrayList<>();
+
+        L1.add(A1);
+        L1.add(A2);
+        
+        return L1;
     }
 
     /**

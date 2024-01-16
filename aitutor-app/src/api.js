@@ -23,15 +23,17 @@ API.interceptors.response.use(response => {
 // Function to fetch courses
 export const fetchCourses = () => {
   return API.get('/courses');
+  // return { data: ['EAE','Test2'] };
+  // return ['EAE','Test','Test2'];
 };
 
 export default API;
 
 // Function to send a question to GPT API
-export const askGPT = (question, filePaths) => {
-  return API.post('/ask-gpt', {
-    courseName: courseName,
-    question: question,
-    filePaths: filePaths
+export const askGPT = (courseName, question, filePaths) => {
+  return API.post('/gptprompting/ask', {
+    // 'courseName': courseName,
+    'question': question,
+    'filePaths': filePaths
   });
 };

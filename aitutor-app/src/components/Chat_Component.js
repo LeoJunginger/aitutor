@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCourses, askGPT } from '../api';
 
+var courseList;
+var response;
 
 // Functional component for Chat
 export default function ChatComponent() {
@@ -9,6 +11,7 @@ export default function ChatComponent() {
 
     // State to determine the available courses in the db
     const [courses, setCourses] = useState([]);
+    const [coursefiles, setCourseFiles] = useState('');
 
     // State for the conversation history
     const [conversation, setConversation] = useState([
@@ -26,10 +29,13 @@ export default function ChatComponent() {
                     }, 5000); // Timeout in milliseconds
                 });
 
-                const response = await Promise.race([fetchPromise, timeoutPromise]);
+                response = await Promise.race([fetchPromise, timeoutPromise]);
+                
+                // console.log(fetchPromise);
+                // console.log(response);
 
                 // Define courseList here based on the response
-                const courseList = Array.isArray(response.data) && response.data.length
+                courseList = Array.isArray(response.data) && response.data.length
                     ? response.data.map(course => course.courseName ? course.courseName : course).join(', ')
                     : ['EAE','TAM'].join(', '); // Use default if response is empty
 
@@ -42,7 +48,7 @@ export default function ChatComponent() {
                 // Handle error by setting default courses
                 const defaultCourses = ['EAE', 'TAM'];
                 setCourses(defaultCourses);
-                const courseList = defaultCourses.join(', ');
+                courseList = defaultCourses.join(', ');
                 setConversation([
                     { message: `There was an error fetching the most current available courses. I can stil answer questions regarting: ${courseList}`, sender: "ChatGPT" }
                 ]);
@@ -54,8 +60,9 @@ export default function ChatComponent() {
 
     // Function to extract course name from user input
     const extractCourseName = (userInput) => {
-        // Assuming courseList will be a comma-separated string
-        const courseNameRegex = new RegExp(courses.join('|'), 'i');
+        // courseList is comma-separated string
+        const courselist_from_string = courseList.split(',')
+        const courseNameRegex = new RegExp(courselist_from_string.join('|'), 'i');
         const match = userInput.match(courseNameRegex);
         return match ? match[0] : null;
     };
@@ -93,11 +100,21 @@ export default function ChatComponent() {
             } else {
                 // Extract the course name from user input
                 const extractedCourseName = extractCourseName(userInput);
-        
+
+                console.log("exact course name:"+extractedCourseName);
+
                 if (extractedCourseName) {
                     // User provides a valid course name
                     setCourseName(extractedCourseName);
                     setConversation(convo => [...convo, { sender: 'ai', message: `Got it! What's your question regarding ${extractedCourseName}?` }]);
+                    const cc = response.data;
+
+                    const choosenCourse = cc.find(obj => obj['courseName'] === extractedCourseName);
+
+                    console.log(response.data);
+                    console.log(choosenCourse);
+
+                    setCourseFiles(choosenCourse.materialPath)
                     setAskingCourse(false); // Stop asking for course name
                 } else {
                     // Course name not found, keep asking for a course name
@@ -107,7 +124,7 @@ export default function ChatComponent() {
             } else {
                 // Call the askGPT API function with the course name and user question
                 try {
-                    const response = await askGPT(courseName, userInput);
+                    const response = await askGPT(courseName, userInput, coursefiles);
                     if (response.data) {
                         setConversation(convo => [...convo, { sender: 'ai', message: response.data }]);
                     } else {

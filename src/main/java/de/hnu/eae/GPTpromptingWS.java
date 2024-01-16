@@ -2,6 +2,8 @@ package de.hnu.eae;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
@@ -13,7 +15,9 @@ import de.hnu.eae.ai.GPTprompting;
 import de.hnu.eae.data.CourseDAO;
 import de.hnu.eae.data.Course;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 // REST API for GPT request, necessary to allign with separation of concerns
 // Client request (Frontend) - HTTP request GPTpromptingWS endpoint -> 
@@ -33,20 +37,20 @@ public class GPTpromptingWS {
     @Path("/ask")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response askCourse(GPTRequest request) {
-        GPTprompting gptPrompting = new GPTprompting();
+    public Response askCourse(String request) {
 
-        // Fetch course details from the database
-        Course course = courseDAO.findCoursebyName(request.getCourseName());
-        if (course == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Course not found").build();
-        }
+        Jsonb jsonb = JsonbBuilder.create();
 
-        // Get the material path from the course
-        String materialPath = course.getMaterialPath();
+        GPTRequest gptrequest = jsonb.fromJson(request, GPTRequest.class);
+
+        GPTprompting gptprompting = new GPTprompting();
+
+        List<String> materialPath = new ArrayList<>();
+        materialPath.add(gptrequest.getFilePaths());
+
 
         // Call GPTprompting to process the documents and get a response from GPT
-        String gptResponse = gptPrompting.processDocumentsAndAskQuestion(Arrays.asList(materialPath), request.getQuestion());
+        String gptResponse = gptprompting.processDocumentsAndAskQuestion(materialPath, gptrequest.getQuestion());
 
         // Return the response from GPT API to the client
         return Response.ok(gptResponse).build();
@@ -54,20 +58,25 @@ public class GPTpromptingWS {
 
 
     public static class GPTRequest {
-        private String courseName;
         private String question;
-        // add more fields if needed
+        private String filePaths;
     
-        // Getter for courseName
-        public String getCourseName() {
-            return courseName;
+        
+
+        
+
+        public String getFilePaths() {
+            return filePaths;
         }
-    
-        // Setter for courseName
-        public void setCourseName(String courseName) {
-            this.courseName = courseName;
+
+        public void setFilePaths(String filePaths) {
+            this.filePaths = filePaths;
         }
-    
+
+        public GPTRequest() {
+            super();
+        }
+
         // Getter for question
         public String getQuestion() {
             return question;
@@ -78,7 +87,12 @@ public class GPTpromptingWS {
             this.question = question;
         }
     
-        // Add getters and setters for other fields as needed
+
+
+        @Override
+        public String toString() {
+            return "GPTRequest [question=" + question + ", filePaths=" + filePaths + "]";
+        }
     }
     
 }
