@@ -58,4 +58,9 @@ public class AuthenticationService {
             throw new Exception("Error creating JWT for user: " + user.getUsername(), exception);
         }
     }
+
+    public String hashPassword(String plainTextPassword) {
+        return PasswordUtils.hashPassword(plainTextPassword);
+    }
+    
 }

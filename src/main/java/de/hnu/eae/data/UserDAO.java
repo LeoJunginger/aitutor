@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserDAO {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "AITutorDB")
     private EntityManager em;
 
     /**
@@ -30,4 +30,9 @@ public class UserDAO {
             return null;
         }
     }
+
+    public void createUser(User user) {
+        em.persist(user);
+    }
+    
 }

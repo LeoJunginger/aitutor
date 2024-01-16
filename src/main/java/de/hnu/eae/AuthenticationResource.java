@@ -11,8 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * This class represents a resource for handling authentication-related operations.
- * It provides endpoints for user login and logout.
+ * This class represents the resource for authentication-related operations.
+ * It provides endpoints for user login, logout, and registration.
  */
 @Path("/auth")
 public class AuthenticationResource {
@@ -64,4 +64,31 @@ public class AuthenticationResource {
         // Implement jwt_token removal on client side
         return Response.ok().entity("User logged out successfully").build();
     }
+
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(User user) {
+        try {
+            // Validate user details (e.g., check if username is already taken)
+            if (userDAO.findUserByUsername(user.getUsername()) != null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Username already taken").build();
+            }
+
+            // Hash the password
+            String hashedPassword = authService.hashPassword(user.getPassword());
+            user.setPassword(hashedPassword);
+
+            // Save the new user
+            userDAO.createUser(user);
+
+            return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("An internal server error occurred.").build();
+        }
+    }
+
 }
