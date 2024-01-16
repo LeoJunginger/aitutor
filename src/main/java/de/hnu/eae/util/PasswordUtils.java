@@ -1,4 +1,4 @@
-package de.hnu.eae.data;
+package de.hnu.eae.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 

@@ -2,7 +2,8 @@ package de.hnu.eae;
 
 import de.hnu.eae.data.User;
 import de.hnu.eae.data.UserDAO;
-import de.hnu.eae.data.PasswordUtils;
+import de.hnu.eae.util.PasswordUtils;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

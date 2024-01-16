@@ -2,7 +2,7 @@ package de.hnu.eae;
 
 import de.hnu.eae.data.User;
 import de.hnu.eae.data.UserDAO;
-import de.hnu.eae.data.AuthToken;
+import de.hnu.eae.util.AuthToken;
 import de.hnu.eae.data.Credentials;
 
 import javax.inject.Inject;

@@ -1,4 +1,4 @@
-package de.hnu.eae.data;
+package de.hnu.eae.util;
 
 /**
  * Class to encapsulate the JWT token in a response.
