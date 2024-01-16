@@ -1,43 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+function Register() {
+  const [user, setUser] = useState({ username: '', password: '' });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:9080/aitutor/api/auth/login', {
+      const response = await fetch('http://localhost:9080/aitutor/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }, 
-        body: JSON.stringify(credentials),
+        },
+        body: JSON.stringify(user),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('authToken', data.token); // Store the JWT token in localStorage
-        navigate('/'); // Redirect to the home page after login
+        navigate('/login'); // Redirect to login page after registration
       } else {
-        // Handle login error (e.g., invalid credentials)
-        console.error('Login failed:', response.statusText);
+        // Handle registration error (e.g., username already taken)
+        const data = await response.json();
+        console.error(data);
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Registration failed:', error);
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username</label>
@@ -45,7 +44,7 @@ function Login() {
             type="text"
             name="username"
             id="username"
-            value={credentials.username}
+            value={user.username}
             onChange={handleChange}
           />
         </div>
@@ -55,14 +54,14 @@ function Login() {
             type="password"
             name="password"
             id="password"
-            value={credentials.password}
+            value={user.password}
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Register;
