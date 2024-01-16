@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api, {fetchCourses, fetchLecturers, createCourse} from '../api';
+import api, { fetchCourses, fetchLecturers, createCourse } from '../api';
 import { useNavigate } from 'react-router-dom';
 import CourseComponent from '../components/CourseComponent';
 import CreateCoursePopup from '../components/CreateCoursePopup';
@@ -10,6 +10,14 @@ const CourseDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if the user is authenticated (valid token)
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      // If there is no valid token, redirect to the login page
+      navigate('/login');
+      return;
+    }
+
     const getCourses = async () => {
       try {
         const response = await fetch('http://localhost:9080/aitutor/api/courses', {
@@ -19,12 +27,12 @@ const CourseDashboard = () => {
             // Add any additional headers if needed
           },
         });
-    
+
         if (!response.ok) {
           // Handle non-successful response here if needed
           throw new Error(`Failed to fetch courses. Status: ${response.status}`);
         }
-    
+
         const data = await response.json();
         // Assuming setCourses is a state-setting function like in React
         setCourses(data);
@@ -80,7 +88,7 @@ const CourseDashboard = () => {
             key={course.id}
             name={course.courseName}
             lecturer={course.lecturer}
-            description={course.description} 
+            description={course.description}
           />
         ))}
       </div>

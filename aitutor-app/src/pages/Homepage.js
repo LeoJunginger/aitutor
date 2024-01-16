@@ -8,6 +8,14 @@ function Homepage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Check if the user is authenticated (valid token)
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            // If there is no valid token, redirect to the login page
+            navigate('/login');
+            return;
+        }
+
         const fetchCourses = async () => {
             try {
                 const response = await API.get('/courses');
@@ -18,19 +26,26 @@ function Homepage() {
         };
 
         fetchCourses();
-    }, []);
+    }, [navigate]);
 
     const goToCourses = () => {
         navigate('/courses');
     };
+
     const goToChatPage = () => {
         navigate('/chat');
+    };
+
+    const handleLogout = () => {
+        // Clear user authentication token from local storage
+        localStorage.removeItem('authToken');
+        navigate('/login');
     };
 
     return (
         <div className="homepage-container">
             <h1>Welcome to the AITutor Homepage</h1>
-            
+
             <button className="go-to-courses-button" onClick={goToCourses}>
                 Go to Courses
             </button>
@@ -43,7 +58,9 @@ function Homepage() {
             </div>
 
             <div>
-                <button style={{ margin: '30px', width:'100px', height: '50px' }}>Profile</button> {/* Non-clickable for now */}
+                <button style={{ margin: '30px', width: '100px', height: '50px' }} onClick={handleLogout}>
+                    Logout
+                </button>
             </div>
 
             <div className="chat-icon-container" onClick={goToChatPage}>
@@ -52,4 +69,5 @@ function Homepage() {
         </div>
     );
 }
+
 export default Homepage;

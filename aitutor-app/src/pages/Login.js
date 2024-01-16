@@ -25,7 +25,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('authToken', data.token); // Store the JWT token in localStorage
-        navigate('/'); // Redirect to the home page after login
+        navigate('/homepage'); // Redirect to the home page after login
       } else {
         // Handle login error (e.g., invalid credentials)
         console.error('Login failed:', response.statusText);
