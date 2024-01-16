@@ -6,33 +6,35 @@ import CreateCoursePopup from '../components/CreateCoursePopup';
 
 const CourseDashboard = () => {
   const [courses, setCourses] = useState([]);
-  const [lecturers, setLecturers] = useState([]); 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getCourses = async () => {
       try {
-        const response = await api.fetchCourses();
-        setCourses(response.data);
+        const response = await fetch('http://localhost:9080/aitutor/api/courses', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any additional headers if needed
+          },
+        });
+    
+        if (!response.ok) {
+          // Handle non-successful response here if needed
+          throw new Error(`Failed to fetch courses. Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        // Assuming setCourses is a state-setting function like in React
+        setCourses(data);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
-    };
-
-    // Fetch lecturers
-    const getLecturers = async () => {
-      try {
-        const response = await api.fetchLecturers();
-        setLecturers(response.data);
-      } catch (error) {
-        console.error('Error fetching lecturers:', error);
-      }
-    };
+    }
 
     getCourses();
-    getLecturers();
-  }, []);
+  }, [isPopupOpen]);
 
   const handleCreateCourse = () => {
     setPopupOpen(true);
@@ -43,10 +45,10 @@ const CourseDashboard = () => {
       await createCourse(newCourseData);
       const updatedCourses = await fetchCourses();
       setCourses(updatedCourses.data);
+      setPopupOpen(false); // close Popup
     } catch (error) {
       console.error('Error creating course:', error);
-    } finally {
-      setPopupOpen(false); // close  Popup
+      setPopupOpen(false); // close Popup even if there is an error
     }
   };
 
@@ -61,23 +63,24 @@ const CourseDashboard = () => {
   return (
     <div>
       <h1>Course Dashboard</h1>
-      <button onClick={handleCreateCourse}>Create New Course</button>
+      <button className="create-course-button" onClick={handleCreateCourse}>
+        +
+      </button>
 
       {isPopupOpen && (
         <CreateCoursePopup
-          lecturers={lecturers}
           onCreateCourse={handleCreateCourseSubmit}
           onClose={closePopup}
         />
       )}
 
-      <div>
+      <div className="course-list">
         {courses.map(course => (
           <CourseComponent
             key={course.id}
             name={course.courseName}
-            lecturer={course.lecturer ? `${course.lecturer.firstname} ${course.lecturer.lastname}` : 'N/A'}
-            description={course.description}
+            lecturer={course.lecturer}
+            description={course.description} 
           />
         ))}
       </div>

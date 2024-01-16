@@ -44,24 +44,6 @@ public class CourseResource {
         return Response.status(Response.Status.CREATED).entity("Course created successfully").build();
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Course> getAllCourses() {
-        // get all courses from database via entity manager
-        User U1 = new User(999, "uname1", "pwd1", "role1", "User_fn", "User_ln",  new Date(10000), "deutsch");
-        Set<User> S1 = new HashSet<>();
-        S1.add(U1);
-
-        Course A1 = new Course("TAM", "TAM Description", "Weeger", "../src/main/java/de/hnu/eae/ai/pdfs/UnderstandingLibertyServer.pdf", S1);
-        Course A2 = new Course("TAM2", "TAM Description", "Weeger", "../src/main/java/de/hnu/eae/ai/pdfs/UnderstandingLibertyServer.pdf", S1);
-        
-        List<Course> L1 = new ArrayList<>();
-
-        L1.add(A1);
-        L1.add(A2);
-        
-        return L1;
-    }
 
     /**
      * Uploads material for a specific course.
@@ -94,5 +76,30 @@ public class CourseResource {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error uploading file").build();
         }
+    }
+
+            /**
+     * Retrieves a list of all courses.
+     *
+     * @return the response containing the list of courses
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCourses() {
+        List<Course> courses = courseDAO.getAllCourses(); 
+        return Response.ok(courses).build();
+    }
+
+        /**
+     * Retrieves a specific course.
+     * 
+     * @param courseId the ID of the course
+     * @return the course with the given ID
+     */
+    @GET
+    @javax.ws.rs.Path("/{courseId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Course showCourse(@PathParam("courseId") Long courseId) {
+        return courseDAO.findCourse(courseId);
     }
 }

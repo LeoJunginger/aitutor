@@ -1,0 +1,51 @@
+/* Homepage.css */
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .homepage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+    text-align: center;
+  }
+  
+  .news-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .news-box {
+    border: 1px solid #ccc;
+    padding: 20px; 
+    margin: 20px; 
+    width: 300px; 
+    text-align: center; 
+  }
+  
+  .go-to-courses-button {
+    margin: 20px;
+    padding: 15px;
+    width: 45%;
+    font-size: 1.2rem;
+  }
+  
+  .chat-icon-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+  
+  .chat-icon {
+    width: 50px;
+  }

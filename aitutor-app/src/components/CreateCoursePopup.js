@@ -18,7 +18,27 @@ const CreateCoursePopup = ({ onClose }) => {
 
     // Create the new course
     const newCourse = { courseName, description, lecturer };
-    await createCourse(newCourse);
+
+    try {
+      const response = await fetch('http://localhost:9080/aitutor/api/courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCourse),
+      });
+
+      if (response.ok) {
+        // Course created successfully
+        // You might want to add additional logic or notifications here
+      } else {
+        // Handle course creation error (e.g., course name already taken)
+        const data = await response.json();
+        console.error(data);
+      }
+    } catch (error) {
+      console.error('Course creation failed:', error);
+    }
 
     // Close the popup
     onClose();

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/CourseComponent.css'; // Import your CSS file for styling
+import '../styling/Course.css'; // Import your CSS file for styling
 
 function CourseComponent({ name, lecturer, description, onClick }) {
   return (
@@ -7,7 +7,7 @@ function CourseComponent({ name, lecturer, description, onClick }) {
       <div className="course-header">
         <h2 className="course-name">{name}</h2>
         <p className="lecturer-name">
-          Lecturer: {lecturer.lastname}, {lecturer.firstname}
+          Lecturer: {lecturer}
         </p>
       </div>
       <div className="course-description">

@@ -1,5 +1,7 @@
 package de.hnu.eae.data;
 
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,5 +67,15 @@ public class CourseDAO {
     @Transactional
     public void updateCourse(Course course) {
         entityManager.merge(course);
+    }
+
+    /**
+     * Retrieves a list of all courses from the database.
+     *
+     * @return the list of courses
+     */
+    @Transactional
+    public List<Course> getAllCourses() {
+        return entityManager.createQuery("SELECT c FROM Course c", Course.class).getResultList();
     }
 }
