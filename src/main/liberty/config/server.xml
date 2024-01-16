@@ -21,12 +21,6 @@
         <file name="/config/lib/postgresql-42.7.1.jar" />
     </library>
 
-    <!-- <jdbcDriver id="Derby" libraryRef="DerbyJDBCJar"
-    javax.sql.XADataSource="org.apache.derby.jdbc.ClientXADataSource"/>
-    <library filesetRef="DerbyFileset" id="DerbyJDBCJar"/>
-    <fileset dir="/Users/pbrune/db-derby-10.16.1.1-bin/lib" id="DerbyFileset"
-             includes="*.jar"/> -->
-
     <!-- To access this server from a remote client add a host attribute to the following element,
     e.g. host="*" -->
     <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" />
