@@ -1,43 +1,53 @@
 package de.hnu.eae.data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "course")
+@Table(schema = "public", name = "courses")
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long courseId;
-
-    @Column(name = "course_name", nullable = false)
+    @Column(nullable = false)
     private String courseName;
-
-    @Column(name = "description")
+    @Column(length = 1000)
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "lecturer_id", nullable = false)
-    private Lecturer lecturer;
-
+    @Column(name = "lecturer")
+    private String lecturer;
     // Field to store the path to the course material
     @Column(name = "material_path")
     private String materialPath;
+    @ManyToMany(mappedBy = "courses")
+    private Set<User> students = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "courseId", referencedColumnName = "courseId"), inverseJoinColumns = @JoinColumn(name = "studentId", referencedColumnName = "id"))
+    /*@ManyToMany
+    @JoinTable(
+        name = "enrollment",  // Der Name der Join-Tabelle
+        joinColumns = @JoinColumn(name = "course_id"),  // Die Spalte für "Course"
+        inverseJoinColumns = @JoinColumn(name = "student_id")  // Die Spalte für "Student"
+    )
     private Set<Student> enrolledStudents;
+    /*@OneToMany(mappedBy = "course")
+    private Set<CourseMaterial> courseMaterials;
+    */
 
-    public Course() {
-    }
-
-    public Course(String courseName, String description, Lecturer lecturer) {
+    public Course(String courseName, String description, String lecturer, String materialPath, Set<User> students) {
         this.courseName = courseName;
         this.description = description;
         this.lecturer = lecturer;
+        this.materialPath = materialPath;
+        this.students = students;
+    
     }
+    
+    public Course() {
+        super();
+    }   
+   
 
     public Long getCourseId() {
         return courseId;
@@ -63,11 +73,11 @@ public class Course {
         this.description = description;
     }
 
-    public Lecturer getLecturer() {
+    public String getLecturer() {
         return lecturer;
     }
 
-    public void setLecturer(Lecturer lecturer) {
+    public void setLecturer(String lecturer) {
         this.lecturer = lecturer;
     }
 
@@ -79,11 +89,32 @@ public class Course {
         this.materialPath = materialPath;
     }
 
-    public Set<Student> getEnrolledStudents() {
-        return enrolledStudents;
+    /*
+    public Course() {
+        this.enrolledStudents = new HashSet<>();
+    }
+    */
+
+    public Set<User> getEnrolledStudents() {
+        return students;
     }
 
-    public void setEnrolledStudents(Set<Student> enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
+    public void setEnrolledStudents(Set<User> enrolledStudents) {
+        this.students = enrolledStudents;
     }
+    /*
+    public void addEnrolledStudent(Student student) {
+        if (enrolledStudents == null) {
+            enrolledStudents = new HashSet<>();
+        }
+        enrolledStudents.add(student);
+        student.getEnrolledCourses().add(this);
+    }
+
+    public void removeEnrolledStudent(Student student) {
+        enrolledStudents.remove(student);
+        student.getEnrolledCourses().remove(this);
+    } */
 }
+    
+

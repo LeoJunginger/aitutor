@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @RequestScoped
 public class CourseDAO {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "AITutorDB")
     private EntityManager entityManager;
 
     /**
