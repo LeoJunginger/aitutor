@@ -25,9 +25,7 @@ public class DocumentProcessor {
             PDFTextStripper stripper = new PDFTextStripper();
             return stripper.getText(document);
             } catch (IOException ex) {
-                return "Liberty Server is a lightweight, dynamic application server designed for both development \n" + //
-                        "and production environments. It is a product of IBM and is often used for cloud-native \n" + //
-                        "applications, microservices, and Java applications..";
+                return "";
             }
         }
     }

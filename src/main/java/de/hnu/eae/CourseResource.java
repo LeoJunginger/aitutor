@@ -2,7 +2,6 @@ package de.hnu.eae;
 
 import de.hnu.eae.data.Course;
 import de.hnu.eae.data.CourseDAO;
-import de.hnu.eae.data.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
