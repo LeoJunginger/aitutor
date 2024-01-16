@@ -22,16 +22,38 @@ API.interceptors.response.use(response => {
 
 // Function to fetch courses
 export const fetchCourses = () => {
-  return API.get('/courses');
+  return API.get('/courses'); // Update path
 };
 
-export default API;
-
-// Function to send a question to GPT API
-export const askGPT = (question, filePaths) => {
-  return API.post('/ask-gpt', {
-    courseName: courseName,
-    question: question,
-    filePaths: filePaths
-  });
+// Function to create a course
+export const createCourse = (newCourse) => {
+  return API.post('/courses', newCourse); // Update path
 };
+
+// Function to update a course
+export const updateCourse = (courseId, updatedCourse) => {
+  return API.put(`/courses${courseId}`, updatedCourse); // Update path
+};
+
+// Function to fetch users
+export const fetchUsers = () => {
+  return API.get('/users/all'); // Update path
+};
+
+// Function to create a user
+export const createUser = (newUser) => {
+  return API.post('/users/create', newUser); // Update path
+};
+
+export const fetchLecturers = async () => {
+  const response = await API.get('/users/all'); // Update path
+  const lecturers = response.data.filter(user => user.role === 'LECTURER');
+  return lecturers;
+};
+
+// Function to update a user
+export const updateUser = (id, updatedUser) => {
+  return API.put(`/users/update/${id}`, updatedUser); // Update path
+};
+
+export default API; 

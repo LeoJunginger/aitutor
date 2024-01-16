@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../api'; 
-
+import API from '../api';
+import CreateLecturerPopup from '../components/CreateLecturerPopup';
+import '../styling/Login.css'; // Import the CSS file for styling
 
 function Login() {
     const navigate = useNavigate();
+    const [showPopup, setShowPopup] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -20,11 +22,21 @@ function Login() {
         }
     };
 
+    const handleCreateLecturer = async (user) => {
+        try {
+            const response = await API.post('/users', { ...user, role: 'LECTURER' });
+            console.log(`Created lecturer with username: ${user.username}`);
+            navigate('/homepage');
+        } catch (error) {
+            console.error('Failed to create lecturer', error);
+        }
+    };
+
     return (
-        <div>
-            <form onSubmit={handleLogin}>
+        <div className="login-container">
+            <form onSubmit={handleLogin} className="login-form">
                 <h2>Login</h2>
-                <div>
+                <div className="form-group">
                     <label>Username:</label>
                     <input 
                         type="text" 
@@ -33,7 +45,7 @@ function Login() {
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Password:</label>
                     <input 
                         type="password" 
@@ -42,9 +54,12 @@ function Login() {
                         required
                     />
                 </div>
+                <button type="button" onClick={() => setShowPopup(true)}>Create Lecturer</button>
                 <button type="submit">Login</button>
             </form>
+            {showPopup && <CreateLecturerPopup onClose={() => setShowPopup(false)} onCreate={handleCreateLecturer} />}
         </div>
     );
 }
+
 export default Login;

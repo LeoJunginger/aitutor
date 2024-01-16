@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCourses, createCourse } from '../api'; // Füge die createCourse-Funktion hinzu
+import api, {fetchCourses, fetchLecturers, createCourse} from '../api';
 import { useNavigate } from 'react-router-dom';
 import CourseComponent from '../components/CourseComponent';
-import CreateCoursePopup from '../components/CreateCoursePopup'; // Füge die CreateCoursePopup-Komponente hinzu
+import CreateCoursePopup from '../components/CreateCoursePopup';
 
 const CourseDashboard = () => {
   const [courses, setCourses] = useState([]);
-  const [lecturers, setLecturers] = useState([]); // Füge die State-Variable für Lecturers hinzu
+  const [lecturers, setLecturers] = useState([]); 
   const [isPopupOpen, setPopupOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getCourses = async () => {
       try {
-        const response = await fetchCourses();
+        const response = await api.fetchCourses();
         setCourses(response.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
     };
 
-    // Lade auch die Lecturers beim ersten Rendern der Komponente
+    // Fetch lecturers
     const getLecturers = async () => {
       try {
-        const response = await fetchLecturers();
+        const response = await api.fetchLecturers();
         setLecturers(response.data);
       } catch (error) {
         console.error('Error fetching lecturers:', error);
