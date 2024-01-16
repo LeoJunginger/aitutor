@@ -5,6 +5,7 @@ const CreateCoursePopup = ({ onClose }) => {
   const [courseName, setCourseName] = useState('');
   const [description, setDescription] = useState('');
   const [lecturer, setLecturer] = useState('');
+  const [materialPath, setMaterialPath] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,7 +18,7 @@ const CreateCoursePopup = ({ onClose }) => {
     }
 
     // Create the new course
-    const newCourse = { courseName, description, lecturer };
+    const newCourse = { courseName, description, lecturer, materialPath };
 
     try {
       const response = await fetch('http://localhost:9080/aitutor/api/courses', {
@@ -58,6 +59,10 @@ const CreateCoursePopup = ({ onClose }) => {
         <label>
           Lecturer:
           <input type="text" value={lecturer} onChange={e => setLecturer(e.target.value)} required />
+        </label>
+        <label>
+          Material Path:
+          <input type="text" value={materialPath} onChange={e => setMaterialPath(e.target.value)} required />
         </label>
         <button type="submit">Create Course</button>
         <button type="button" onClick={onClose}>Close</button>
