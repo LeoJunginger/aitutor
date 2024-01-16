@@ -27,7 +27,10 @@ export const fetchCourses = () => {
   // return ['EAE','Test','Test2'];
 };
 
-export default API;
+// Function to create a course
+export const createCourse = (newCourse) => {
+  return API.post('/courses', newCourse); // Update path
+};
 
 // Function to send a question to GPT API
 export const askGPT = (courseName, question, filePaths) => {
@@ -37,3 +40,30 @@ export const askGPT = (courseName, question, filePaths) => {
     'filePaths': filePaths
   });
 };
+// Function to update a course
+export const updateCourse = (courseId, updatedCourse) => {
+  return API.put(`/courses${courseId}`, updatedCourse); // Update path
+};
+
+// Function to fetch users
+export const fetchUsers = () => {
+  return API.get('/users/all'); // Update path
+};
+
+// Function to create a user
+export const createUser = (newUser) => {
+  return API.post('/users/create', newUser); // Update path
+};
+
+export const fetchLecturers = async () => {
+  const response = await API.get('/users/all'); // Update path
+  const lecturers = response.data.filter(user => user.role === 'LECTURER');
+  return lecturers;
+};
+
+// Function to update a user
+export const updateUser = (id, updatedUser) => {
+  return API.put(`/users/update/${id}`, updatedUser); // Update path
+};
+
+export default API; 

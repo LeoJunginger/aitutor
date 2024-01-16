@@ -1,0 +1,33 @@
+.course-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .course-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .course-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .lecturer-name {
+    margin-top: 5px;
+    font-size: 1rem;
+  }
+  
+  .course-description {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
